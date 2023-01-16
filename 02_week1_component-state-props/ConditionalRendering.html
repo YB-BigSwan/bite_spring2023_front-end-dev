@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Check string length</title>
+	</head>
+	<body>
+		<div id="root"></div>
+		<button type="submit" onclick="window.location.reload()">
+			Try another word
+		</button>
+
+		<!-- Load React & Babel -->
+		<!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+		<script
+			src="https://unpkg.com/react@18/umd/react.development.js"
+			crossorigin
+		></script>
+		<script
+			src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+			crossorigin
+		></script>
+		<!-- Babel = JS compiler for cross-browser support -->
+		<script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+
+		<!-- Load our React component. -->
+		<script type="text/babel">
+			// Checks string length of props
+
+			function StringLengthComponent(props) {
+				// if the length of the string is greater than 5 it will print 'Too long' to the page, otherwise it will print the prop text
+				return (
+					<React.Fragment>
+						<h3>text = {props.text}</h3>
+						{props.text.length > 5 ? <p>Too Long</p> : <p>{props.text}</p>}
+					</React.Fragment>
+				);
+			}
+
+			const root = ReactDOM.createRoot(document.getElementById('root'));
+			root.render(<StringLengthComponent text={window.prompt('Enter Text')} />);
+		</script>
+	</body>
+</html>
