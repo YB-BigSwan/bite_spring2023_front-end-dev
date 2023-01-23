@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div id="root"></div>
+
+		<script
+			src="https://unpkg.com/react@18/umd/react.development.js"
+			crossorigin
+		></script>
+		<script
+			src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+			crossorigin
+		></script>
+		<script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+
+		<script type="text/babel">
+			function CheckAge() {
+				const [person, setPerson] = React.useState({ firstName: '', age: '' });
+				const [message, setMessage] = React.useState('');
+
+				const inputChange = (event) => {
+					setPerson({ ...person, [event.target.name]: event.target.value });
+				};
+
+				const formSubmit = (event) => {
+					event.preventDefault();
+					if (parseInt(person.age) < 18) {
+						setMessage('You are too young');
+					} else {
+						setMessage('Hello ' + person.firstName);
+					}
+				};
+
+				return (
+					<div>
+						<p id='output'>{message}</p>
+
+						<form onSubmit={formSubmit}>
+							<input
+								type='text'
+								name='firstName'
+								placeholder='Enter name'
+								value={person.firstName}
+								onChange={inputChange}
+							/>
+							<input
+								type='text'
+								name='age'
+								placeholder='Enter age'
+								value={person.age}
+								onChange={inputChange}
+							/>
+
+							<input type='submit' value='Send' />
+						</form>
+					</div>
+				);
+			}
+
+			ReactDOM.render(<CheckAge />, document.getElementById('root'));
+		</script>
+	</body>
+</html>
