@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div id="root"></div>
+
+		<script
+			src="https://unpkg.com/react@18/umd/react.development.js"
+			crossorigin
+		></script>
+		<script
+			src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+			crossorigin
+		></script>
+		<script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+
+		<script type="text/babel">
+			const ShowAvatar = () => {
+				const [person, setPerson] = React.useState([]);
+
+				React.useEffect(() => {
+					fetchAvatar();
+				}, []);
+
+				const fetchAvatar = () => {
+					fetch('https://reqres.in/api/users')
+						.then((response) => response.json())
+						.then((responseData) => {
+							setPerson(responseData.data);
+						})
+						.catch((err) => console.error(err));
+				};
+
+				return (
+					<div>
+						<h2>Persons</h2>
+						<table>
+							<tbody>
+								<tr>
+									<th>First name</th>
+									<th>Last Name</th>
+									<th>Email</th>
+								</tr>
+								{person.map((person) => (
+									<tr key={person.id}>
+										<td>{person.first_name}</td>
+										<td>{person.last_name}</td>
+										<td>{person.email}</td>
+										<td>
+											<img src={person.avatar} />
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+				);
+			};
+
+			ReactDOM.render(<ShowAvatar />, document.getElementById('root'));
+		</script>
+	</body>
+</html>
