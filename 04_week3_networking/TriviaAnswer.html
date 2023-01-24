@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div id="root"></div>
+
+		<script
+			src="https://unpkg.com/react@18/umd/react.development.js"
+			crossorigin
+		></script>
+		<script
+			src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+			crossorigin
+		></script>
+		<script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+
+		<script type="text/babel">
+			const GenerateQuestion = () => {
+				const [question, setQuestion] = React.useState('');
+				const [answer, setAnswer] = React.useState('');
+				const [showing, setShowing] = React.useState(false);
+
+				React.useEffect(() => {}, []);
+
+				const fetchQuestion = () => {
+					fetch('https://opentdb.com/api.php?amount=1')
+						.then((response) => response.json())
+						.then((responseData) => {
+							setQuestion(responseData.results[0].question);
+							setAnswer(responseData.results[0].correct_answer);
+						})
+						.catch((err) => console.error(err));
+				};
+
+				const newQuestion = () => {
+					fetchQuestion();
+					setShowing(false);
+				};
+
+				const showAnswer = () => {
+					setShowing(true);
+				};
+
+				return (
+					<div>
+						<p>{question}</p>
+						<button onClick={newQuestion}>New question</button>
+						<button onClick={showAnswer}>Show answer</button>
+						<p>{showing ? answer : ''}</p>
+					</div>
+				);
+			};
+
+			ReactDOM.render(<GenerateQuestion />, document.getElementById('root'));
+		</script>
+	</body>
+</html>
