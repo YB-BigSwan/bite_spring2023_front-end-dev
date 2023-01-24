@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div id="root"></div>
+
+		<script
+			src="https://unpkg.com/react@18/umd/react.development.js"
+			crossorigin
+		></script>
+		<script
+			src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+			crossorigin
+		></script>
+		<script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+
+		<script type="text/babel">
+			const ShowRepos = () => {
+				const [listItem, setlistItem] = React.useState([]);
+				const [keyword, setKeyWord] = React.useState('react');
+				const [isReady, setIsReady] = React.useState(false);
+
+				React.useEffect(() => {
+					fetchRepos();
+				}, []);
+
+				const fetchRepos = () => {
+					fetch(`https://api.github.com/search/repositories?q=${keyword}`)
+						.then((response) => response.json())
+						.then((responseData) => {
+							setlistItem(responseData.items);
+							setIsReady(true);
+						})
+						.catch((err) => console.error(err));
+				};
+
+				const inputChange = (event) => {
+					setKeyWord(event.target.value);
+				};
+
+				const search = (event) => {
+					event.preventDefault();
+					setIsReady(false);
+					fetchRepos();
+				};
+
+				if (!isReady) {
+					return <p>Loading...</p>;
+				} else {
+					return (
+						<div>
+							<h2>Repositories</h2>
+							<form onSubmit={search}>
+								<input
+									type='text'
+									name='searchWord'
+									placeholder='Enter keyword'
+									value={keyword}
+									onChange={inputChange}
+								/>
+
+								<input type='submit' value='Search' />
+							</form>
+							<table>
+								<tbody>
+									<tr>
+										<th>Name</th>
+										<th>URL</th>
+									</tr>
+									{listItem.map((item) => (
+										<tr key={item.id}>
+											<td>{item.full_name}</td>
+											<td>
+												<a href={item.html_url}>{item.html_url}</a>
+											</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+						</div>
+					);
+				}
+			};
+
+			ReactDOM.render(<ShowRepos />, document.getElementById('root'));
+		</script>
+	</body>
+</html>
