@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div id="root"></div>
+
+		<script
+			src="https://unpkg.com/react@18/umd/react.development.js"
+			crossorigin
+		></script>
+		<script
+			src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+			crossorigin
+		></script>
+		<script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+
+		<script type="text/babel">
+			const ShowWeather = () => {
+				const [location, setLocation] = React.useState('Helsinki');
+				const [temp, setTemp] = React.useState('');
+				const [condition, setCondition] = React.useState('');
+				const [img, setImg] = React.useState('');
+				const [isReady, setIsReady] = React.useState(false);
+
+				const APIKey = '182494e4de034b397fb610d829558dee';
+
+				React.useEffect(() => {
+					fetchWeather();
+				}, []);
+
+				const fetchWeather = () => {
+					fetch(
+						`https://api.openweathermap.org/data/2.5/weather?q=${location}&APPID=${APIKey}&units=metric`
+					)
+						.then((response) => response.json())
+						.then((responseData) => {
+							setTemp(responseData.main.temp);
+							setCondition(responseData.weather[0].description);
+							setImg(responseData.weather[0].icon);
+							setIsReady(true);
+						})
+						.catch((err) => console.error(err));
+				};
+
+				const inputChange = (event) => {
+					setLocation(event.target.value);
+				};
+
+				const formSubmit = (event) => {
+					event.preventDefault();
+					setIsReady(false);
+					fetchWeather();
+				};
+
+				if (!isReady) {
+					return <p>Loading...</p>;
+				} else {
+					return (
+						<div>
+							<form onSubmit={formSubmit}>
+								<input
+									type='text'
+									name='city'
+									placeholder='Enter city'
+									value={location}
+									onChange={inputChange}
+								/>
+
+								<input type='submit' value='Go' />
+							</form>
+
+							<p>Temperature: {temp.toFixed(1)} Celsius</p>
+
+							<p>Weather: {condition}</p>
+
+							<img src={`https://openweathermap.org/img/wn/${img}.png`} />
+						</div>
+					);
+				}
+			};
+
+			ReactDOM.render(<ShowWeather />, document.getElementById('root'));
+		</script>
+	</body>
+</html>
