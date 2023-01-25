@@ -1,0 +1,47 @@
+#root {
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 2rem;
+	text-align: center;
+	background-color: #eceff433;
+	border-radius: 10px;
+}
+
+table {
+	border-collapse: collapse;
+	margin-left: 4.6vw;
+}
+
+td {
+	width: 12.25vw;
+	text-align: start;
+}
+
+#data {
+	border-bottom: 1px double #eceff4;
+}
+
+input[type='submit'] {
+	background-color: #81a1c1;
+	color: #eceff4;
+	height: 2.5vh;
+	width: 7vw;
+	border: none;
+	border-radius: 5px;
+	margin: 10px;
+	margin-left: 30px;
+}
+
+input[type='text'] {
+	margin: 10px;
+	width: 11vw;
+	height: 2.5vh;
+	background-color: #2e3440;
+	color: #eceff4;
+	border: 1px inset #eceff433;
+	border-radius: 5px;
+}
+
+input[type='text']::placeholder {
+	color: #eceff46d;
+}
